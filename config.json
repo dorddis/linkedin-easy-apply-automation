@@ -1,0 +1,41 @@
+{
+  "profile": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "phone": "+91-9876543210",
+    "linkedin": "https://linkedin.com/in/yourprofile",
+    "portfolio": "https://yourportfolio.com",
+    "github": "https://github.com/yourusername",
+    "resume_path": "C:\\Users\\YourUsername\\Documents\\resume.pdf"
+  },
+  "job_search": {
+    "role": "Financial Analyst",
+    "keywords": ["Financial Analyst", "Finance Analyst", "Business Analyst Finance"],
+    "location": "India",
+    "salary": {
+      "current_ctc": "12",
+      "expected_ctc": "15",
+      "notice_period": "30",
+      "years_of_experience": "3-5"
+    }
+  },
+  "skills": {
+    "Excel": 4,
+    "Financial Modeling": 3,
+    "SQL": 3,
+    "Power BI": 3,
+    "Tableau": 2,
+    "Python": 2,
+    "Data Analysis": 4,
+    "Financial Reporting": 3,
+    "Valuation": 3,
+    "DCF": 3,
+    "M&A": 2,
+    "Budgeting": 3,
+    "Forecasting": 3,
+    "SAP": 2
+  },
+  "linkedin_search_url": "https://www.linkedin.com/jobs/search/?keywords=Financial%20Analyst&location=India&f_TPR=r3600&f_AL=true",
+  "daily_target": 20,
+  "chrome_user_data_dir": "C:\\Users\\YourUsername\\.chrome-debug-linkedin"
+}

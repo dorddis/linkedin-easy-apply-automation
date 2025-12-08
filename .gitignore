@@ -1,0 +1,17 @@
+# Chrome user data (contains login sessions - DO NOT COMMIT)
+.chrome-debug-linkedin/
+.chrome-debug-linkedin-*/
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
