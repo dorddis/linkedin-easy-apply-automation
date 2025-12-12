@@ -87,12 +87,19 @@ Task tool call:
 - If agent reports `ERROR` -> Log error, move to next
 
 ### Step 3c: Wait between applications
-After each successful application, execute:
+After each successful application, wait 3-5 minutes:
+
+**Mac/Linux:**
+```bash
+sleep $((RANDOM % 121 + 180))
+```
+
+**Windows:**
 ```bash
 powershell -Command "Start-Sleep -Seconds (Get-Random -Minimum 180 -Maximum 300)"
 ```
 
-This 3-5 minute random delay prevents rate limiting.
+This random delay prevents rate limiting.
 
 ---
 

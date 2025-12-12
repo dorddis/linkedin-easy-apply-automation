@@ -29,29 +29,12 @@ npm --version    # Should show 9+
 This connects Claude Code to a Chrome browser it can control.
 
 **Find your Claude config file:**
-- Windows: `C:\Users\YourUsername\.claude.json`
 - Mac: `~/.claude.json`
+- Windows: `C:\Users\YourUsername\.claude.json`
 
 **Open the file and add/merge this configuration:**
 
-```json
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "chrome-devtools-mcp@latest",
-        "--userDataDir=C:\\Users\\YourUsername\\.chrome-debug-linkedin"
-      ]
-    }
-  }
-}
-```
-
-**IMPORTANT:** Replace `YourUsername` with your actual Windows username.
-
-**Mac/Linux version:**
+**Mac/Linux:**
 ```json
 {
   "mcpServers": {
@@ -61,6 +44,24 @@ This connects Claude Code to a Chrome browser it can control.
       "args": [
         "chrome-devtools-mcp@latest",
         "--userDataDir=/Users/yourusername/.chrome-debug-linkedin"
+      ]
+    }
+  }
+}
+```
+
+**IMPORTANT:** Replace `yourusername` with your actual Mac username (run `whoami` in terminal to check).
+
+**Windows version:**
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--userDataDir=C:\\Users\\YourUsername\\.chrome-debug-linkedin"
       ]
     }
   }
@@ -254,12 +255,13 @@ docs/                         # Additional documentation
 
 ### Chrome doesn't open
 
-1. Check `.claude.json` syntax (no trailing commas, correct escaping)
-2. Verify the path uses `\\` on Windows
-3. Test manually:
+1. Check `~/.claude.json` syntax (no trailing commas)
+2. Verify the userDataDir path is correct for your system
+3. Test manually in terminal:
    ```bash
    npx chrome-devtools-mcp@latest --help
    ```
+4. Check your username: `whoami`
 
 ### "Not logged in" errors
 

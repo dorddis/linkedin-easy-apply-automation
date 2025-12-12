@@ -117,6 +117,13 @@ Apply to jobs scoring 4+ first.
 ## Delays Between Applications
 
 After each successful application:
+
+**Mac/Linux:**
+```bash
+sleep $((RANDOM % 121 + 180))
+```
+
+**Windows:**
 ```bash
 powershell -Command "Start-Sleep -Seconds (Get-Random -Minimum 180 -Maximum 300)"
 ```
@@ -177,8 +184,25 @@ Stop immediately. Wait 30-60 minutes before resuming.
 
 ## Chrome MCP Setup (For Reference)
 
-User needs this in their `.claude.json`:
+User needs this in their `~/.claude.json`:
 
+**Mac/Linux:**
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--userDataDir=/Users/USERNAME/.chrome-debug-linkedin"
+      ]
+    }
+  }
+}
+```
+
+**Windows:**
 ```json
 {
   "mcpServers": {
