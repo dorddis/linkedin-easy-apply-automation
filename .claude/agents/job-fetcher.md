@@ -7,44 +7,101 @@ color: blue
 permissionMode: default
 ---
 
-# Job Fetcher
+# Job Fetcher (Config-Driven)
 
-Find fresh LinkedIn Easy Apply jobs. Return 5-7 jobs.
+Find fresh LinkedIn Easy Apply jobs. Return 10-15 jobs.
 
-## Task
-1. Read config.json to get: linkedin_search_url, role keywords
-2. Navigate to the LinkedIn search URL from config
-3. Snapshot (verbose:false) the search results page
-4. Extract 5-7 jobs from the search results page ONLY (do NOT click into individual job listings)
-5. Scrape surface-level info: Company, Role, Posted time, Applicant count, Location, JobURL
+## Setup
+1. Read `config.json` to get:
+   - `job_search.keywords` - array of role keywords to search
+   - `job_search.location` - target location
+   - `linkedin_search_url` - pre-built search URL (optional fallback)
 
-## Output (minimal tokens)
+## Search Strategy
+
+### URL Template
+```
+https://www.linkedin.com/jobs/search/?keywords=[KEYWORD]&location=[LOCATION]&f_TPR=[TIME_FILTER]&f_AL=true&f_WT=2
+```
+- `f_AL=true` = Easy Apply only
+- `f_WT=2` = Remote
+
+### Time Filter (Progressive Expansion)
+**Start narrow, expand if needed:**
+1. `f_TPR=r3600` (1 hour) - try first
+2. `f_TPR=r7200` (2 hours) - if <5 jobs
+3. `f_TPR=r14400` (4 hours) - if still <5 jobs
+4. `f_TPR=r86400` (24 hours) - last resort
+
+### Task
+1. Read config.json for keywords and location
+2. Start with first keyword + 1 hour filter (r3600)
+3. Navigate to search URL
+4. Snapshot (verbose:false) the results
+5. Count jobs found
+6. **If <5 jobs:** Expand time filter (1h -> 2h -> 4h -> 24h) and re-search
+7. Extract jobs from results page (don't click into individual listings)
+8. If <15 jobs after time expansion, try next keyword from config
+9. Return combined list with time filter used noted
+
+---
+
+## Output Format (Minimal Tokens)
+
 ```
 ## Fresh Jobs: [count]
+**Time filter used:** [1h / 2h / 4h / 24h]
 
 1. **[Company] - [Role]**
-   Posted: [time] | Applicants: [n] | Location: [city] | URL: https://www.linkedin.com/jobs/view/[ID]/
+   Posted: [time] | Applicants: [n] | Location: [loc] | URL: https://www.linkedin.com/jobs/view/[ID]/
 
 2. **[Company] - [Role]**
-   Posted: [time] | Applicants: [n] | Location: [city] | URL: https://www.linkedin.com/jobs/view/[ID]/
+   Posted: [time] | Applicants: [n] | Location: [loc] | URL: https://www.linkedin.com/jobs/view/[ID]/
 
-## Priority (Apply First)
-- [Company1] ([reason: age + applicants])
-- [Company2] ([reason])
+[...continue for all jobs...]
+
+## Flagged (Likely Skip)
+- [Company] - [Role] (staffing agency)
+- [Company] - [Role] (too senior)
 ```
 
-## Rules
-1. Prioritize jobs posted recently (prefer <2h but include up to 24h if needed)
-2. Only include roles matching config.json keywords
-3. Sort by freshness + applicant count (lower=better)
-4. Include applicant count if visible
-5. Extract job ID from URL correctly
-6. Return 5-7 jobs minimum (don't stop at 2)
+---
 
-## Errors
-- `LOGIN_REQUIRED` = User not logged in
-- `NO_JOBS_FOUND` = No suitable jobs found
+## Pre-Filtering (Flag These)
+
+Mark these jobs as "Flagged" but still include them:
+- **Staffing agencies:** Robert Half, Randstad, TEKsystems, Insight Global, Kforce, Apex Systems, Harvey Nash, Modis, Hays, Mondo
+- **Too senior:** Title contains Director, VP, Chief, Partner
+- **High applicants:** >100 applicants
+
+---
+
+## Extraction Fields
+
+For each job, extract:
+- Company name
+- Job title
+- Posted time (e.g., "2 hours ago", "1 day ago")
+- Applicant count (if visible)
+- Location (e.g., "New York, NY (Remote)", "Remote")
+- Job URL (format: https://www.linkedin.com/jobs/view/[JOB_ID]/)
+
+---
+
+## Rules
+
+1. Return 10-15 jobs minimum
+2. Don't click into individual job listings (wastes time)
+3. Include flagged jobs in output (orchestrator will decide)
+4. Prioritize jobs by freshness (most recent first)
+5. If a keyword returns 0 results, move to next keyword
+6. Use verbose:false for all snapshots
+
+---
+
+## Error Codes
+
+- `LOGIN_REQUIRED` = User not logged in to LinkedIn
+- `NO_JOBS_FOUND` = No suitable jobs found with any keyword
 - `NAVIGATION_FAILED` = [error details]
 - `CONFIG_ERROR` = Could not read config.json
-
-IMPORTANT: Always return 5-7 jobs even if some are a few hours old. Better to have options than to return only 2 jobs.

@@ -2,7 +2,7 @@
   "profile": {
     "name": "Your Name",
     "email": "your.email@example.com",
-    "phone": "+91-9876543210",
+    "phone": "+1-555-123-4567",
     "linkedin": "https://linkedin.com/in/yourprofile",
     "portfolio": "https://yourportfolio.com",
     "github": "https://github.com/yourusername",
@@ -10,15 +10,17 @@
   },
   "job_search": {
     "role": "Financial Analyst",
-    "keywords": ["Financial Analyst", "Finance Analyst", "Business Analyst Finance"],
-    "location": "India",
-    "salary": {
-      "current_ctc": "12",
-      "expected_ctc": "15",
-      "notice_period": "30",
-      "years_of_experience": "3-5"
-    }
+    "keywords": ["Financial Analyst", "Finance Analyst", "Business Analyst Finance", "FP&A Analyst", "Investment Analyst"],
+    "location": "United States",
+    "remote_only": true
   },
+  "salary": {
+    "current": "75000",
+    "expected": "90000",
+    "currency": "USD",
+    "notice_period": "2 weeks"
+  },
+  "years_of_experience": "3-5",
   "skills": {
     "Excel": 4,
     "Financial Modeling": 3,
@@ -35,7 +37,7 @@
     "Forecasting": 3,
     "SAP": 2
   },
-  "linkedin_search_url": "https://www.linkedin.com/jobs/search/?keywords=Financial%20Analyst&location=India&f_TPR=r3600&f_AL=true",
+  "linkedin_search_url": "https://www.linkedin.com/jobs/search/?keywords=Financial%20Analyst&location=United%20States&f_TPR=r3600&f_AL=true&f_WT=2",
   "daily_target": 20,
   "chrome_user_data_dir": "C:\\Users\\YourUsername\\.chrome-debug-linkedin"
 }
